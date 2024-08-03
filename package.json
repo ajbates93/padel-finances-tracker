@@ -12,12 +12,12 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@nuxt/ui": "^2.17.0",
+    "@types/better-sqlite3": "^7.6.11",
     "drizzle-kit": "^0.23.1",
     "nuxt": "^3.12.4"
   },
   "dependencies": {
     "better-sqlite3": "^11.1.2",
-    "drizzle-orm": "^0.32.1",
-    "typescript": "^5.5.4"
+    "drizzle-orm": "^0.32.1"
   }
 }
