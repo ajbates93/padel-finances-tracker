@@ -9,13 +9,19 @@ import {
 } from "../schema";
 
 export const createUser = async (data: InsertUser) => {
-  await db.insert(users).values(data);
+  if (data.passwordHash === "" || data.passwordHash === undefined) {
+    data.passwordHash = "password";
+  }
+  const user = await db.insert(users).values(data);
+  return user;
 };
 
 export const createSession = async (data: InsertSession) => {
-  await db.insert(sessions).values(data);
+  const session = await db.insert(sessions).values(data);
+  return session;
 };
 
 export const createParticipation = async (data: InsertParticipation) => {
-  await db.insert(participations).values(data);
+  const participation = await db.insert(participations).values(data);
+  return participation;
 };

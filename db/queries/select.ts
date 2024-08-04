@@ -1,13 +1,31 @@
-import { eq } from "drizzle-orm";
+import { eq, gt, getTableColumns, count, sql } from "drizzle-orm";
 import { db } from "../database";
 import {
   type SelectUser,
   type SelectSession,
-  type SelectParticipation,
   users,
   sessions,
   participations,
 } from "../schema";
+
+export const getAllUsers = async (): Promise<
+  Array<{
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+  }>
+> => {
+  return await db
+    .select({
+      id: users.id,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      email: users.email,
+      createdAt: users.createdAt,
+    })
+    .from(users);
+};
 
 export const getUserById = async (
   id: SelectUser["id"],
@@ -25,6 +43,7 @@ export const getUserById = async (
       firstName: users.firstName,
       lastName: users.lastName,
       email: users.email,
+      createdAt: users.createdAt,
     })
     .from(users)
     .where(eq(users.id, id));
@@ -35,12 +54,18 @@ export const getSessionById = async (
 ): Promise<
   Array<{
     id: number;
-    date: number;
+    date: Date;
     cost: number;
     organiserId: number;
   }>
 > => {
-  return await db.select(sessions).where(eq(sessions.id, id));
+  return await db
+    .select({
+      ...getTableColumns(sessions),
+      sessionsCount: count(sessions.id).as("count"),
+    })
+    .from(sessions)
+    .where(eq(sessions.id, id));
 };
 
 // Get all users that participated in a session with a given ID
@@ -49,12 +74,48 @@ export const getUsersInSession = async (
 ): Promise<
   Array<{
     id: number;
-    userId: number;
     sessionId: number;
+    userId: number;
     hasPaid: boolean;
+    firstName: string;
+    lastName: string;
+    email: string;
   }>
 > => {
   return await db
-    .select(participations)
-    .where(eq(participations.sessionId, sessionId));
+    .select({
+      id: participations.id,
+      sessionId: participations.sessionId,
+      userId: participations.userId,
+      hasPaid: participations.hasPaid,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      email: users.email,
+    })
+    .from(participations)
+    .where(eq(participations.sessionId, sessionId))
+    .innerJoin(users, eq(participations.userId, users.id));
+};
+
+// Get all the upcoming sessions for a user with a given ID
+export const getUpcomingSessionsForUser = async (
+  userId: SelectUser["id"],
+): Promise<
+  Array<{
+    id: number;
+    date: Date;
+    cost: number;
+    organiserId: number;
+  }>
+> => {
+  return await db
+    .select({
+      ...getTableColumns(sessions),
+      sessionsCount: count(sessions.id).as("count"),
+    })
+    .from(sessions)
+    .where(
+      eq(sessions.organiserId, userId) &&
+        gt(sessions.date, sql`(datetime('now'))`),
+    );
 };
