@@ -69,3 +69,18 @@ export const balances = sqliteTable("balances", {
   amount: real("amount").notNull(),
   lastUpdatedAt: integer("last_updated_at", { mode: "timestamp" }).notNull(),
 });
+
+export type InsertUser = typeof users.$inferInsert;
+export type SelectUser = typeof users.$inferSelect;
+
+export type InsertSession = typeof sessions.$inferInsert;
+export type SelectSession = typeof sessions.$inferSelect;
+
+export type InsertParticipation = typeof participations.$inferInsert;
+export type SelectParticipation = typeof participations.$inferSelect;
+
+export type InsertTransaction = typeof transactions.$inferInsert;
+export type SelectTransaction = typeof transactions.$inferSelect;
+
+export type InsertBalance = typeof balances.$inferInsert;
+export type SelectBalance = typeof balances.$inferSelect;
