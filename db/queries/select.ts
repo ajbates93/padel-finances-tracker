@@ -110,8 +110,10 @@ export const getUpcomingSessionsForUser = async (
   return await db
     .select({
       ...getTableColumns(sessions),
+      organiserName: sql`${users.firstName} || ' ' || ${users.lastName}`,
     })
     .from(participations)
     .where(eq(participations.userId, userId))
-    .innerJoin(sessions, eq(participations.sessionId, sessions.id));
+    .innerJoin(sessions, eq(participations.sessionId, sessions.id))
+    .innerJoin(users, eq(sessions.organiserId, users.id));
 };
