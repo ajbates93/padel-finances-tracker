@@ -111,6 +111,7 @@ export const getUpcomingSessionsForUser = async (
     .select({
       ...getTableColumns(sessions),
       organiserName: sql`${users.firstName} || ' ' || ${users.lastName}`,
+      hasPaid: participations.hasPaid,
     })
     .from(participations)
     .where(eq(participations.userId, userId))

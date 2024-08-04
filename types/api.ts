@@ -12,6 +12,14 @@ export type SessionApiResponse = {
   organiserId: number;
 };
 
+export type SessionsForUserApiResponse = {
+  id: number;
+  date: Date;
+  cost: number;
+  organiserName: string;
+  hasPaid: boolean;
+};
+
 export type ParticipationApiResponse = {
   id: number;
   userId: number;
