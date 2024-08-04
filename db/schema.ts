@@ -25,7 +25,7 @@ export const sessions = sqliteTable("sessions", {
     .default(sql`(CURRENT_TIMESTAMP)`),
 });
 
-// Track who played in each session
+// Track who played in each session (should've called this sessionUsers)
 export const participations = sqliteTable("participations", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   userId: integer("user_id")

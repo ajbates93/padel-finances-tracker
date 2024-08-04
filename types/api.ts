@@ -12,6 +12,13 @@ export type SessionApiResponse = {
   organiserId: number;
 };
 
+export type ParticipationApiResponse = {
+  id: number;
+  userId: number;
+  sessionId: number;
+  hasPaid: boolean;
+};
+
 export type BaseApiResponse<T> = {
   data: T;
   count: number;

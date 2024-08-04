@@ -62,7 +62,6 @@ export const getSessionById = async (
   return await db
     .select({
       ...getTableColumns(sessions),
-      sessionsCount: count(sessions.id).as("count"),
     })
     .from(sessions)
     .where(eq(sessions.id, id));
@@ -111,11 +110,8 @@ export const getUpcomingSessionsForUser = async (
   return await db
     .select({
       ...getTableColumns(sessions),
-      sessionsCount: count(sessions.id).as("count"),
     })
-    .from(sessions)
-    .where(
-      eq(sessions.organiserId, userId) &&
-        gt(sessions.date, sql`(datetime('now'))`),
-    );
+    .from(participations)
+    .where(eq(participations.userId, userId))
+    .innerJoin(sessions, eq(participations.sessionId, sessions.id));
 };

@@ -5,6 +5,9 @@ export default defineEventHandler(async (event) => {
   // Read the body of the request
   const body = await readBody(event);
 
+  const date = new Date(body.date);
+  body.date = date;
+
   // Create a new user
   const session = await createSession(body);
 
