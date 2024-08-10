@@ -6,6 +6,8 @@
     </div>
 
     <!-- Button to dashboard -->
-    <div class="py-4 my-4"></div>
+    <div class="py-4 my-4">
+      <Login />
+    </div>
   </PageContainer>
 </template>

@@ -17,6 +17,7 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
+    "@auth0/auth0-vue": "^2.3.3",
     "@libsql/client": "^0.8.1",
     "drizzle-orm": "^0.32.1"
   }
